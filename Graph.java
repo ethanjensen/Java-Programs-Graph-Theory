@@ -1,7 +1,8 @@
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Iterator;
 
-public class Graph<V, E>
+public class Graph<V, E> implements Iterable<Vertex<V>>
 {
   private int _vertexCount;
   private int _edgeCount;
@@ -141,5 +142,49 @@ public class Graph<V, E>
     {
       throw new NoSuchEdgeException();
     }
+  }
+
+  public Iterator<Vertex<V>> vertices()
+  {
+    return _vertexMap.keySet().iterator();
+  }
+
+  public Iterator<Vertex<V>> iterator()
+  {
+    return vertices();
+  }
+
+  public Iterator<Vertex<V>> adjacent(Vertex<V> v)
+  {
+    ArrayList<Edge<V, E>> edges = _edgeMap.get(_vertexMap.get(v));
+    ArrayList<Vertex<V>> adjacent = new ArrayList<>();
+    if (edges != null)
+    {
+      for(Edge<V, E> edge : edges)
+      {
+        adjacent.add(edge.getVertex2());
+      }
+    }
+    return adjacent.iterator();
+  }
+
+  public Iterator<Edge<V, E>> edges()
+  {
+    ArrayList<Edge<V, E>> edges = new ArrayList<>();
+    _edgeMap.forEach((u,I) -> {
+      edges.addAll(I);
+    });
+    return edges.iterator();
+  }
+
+  public int adjacentCount(Vertex<V> v)
+  {
+    ArrayList<Edge<V, E>> edges = _edgeMap.get(_vertexMap.get(v));
+    int count = 0;
+    if (edges != null)
+    {
+      count = edges.size();
+    }
+    return count;
   }
 }

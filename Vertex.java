@@ -1,4 +1,4 @@
-public class Vertex<V>
+public class Vertex<V> implements Comparable<Vertex<V>>
 {
   private V _label;
   private int _weight;
@@ -35,13 +35,18 @@ public class Vertex<V>
     _weight = weight;
   }
 
-  public boolean equals(Vertex<V> other)
-  {
-    return other.getLabel().equals(this.getLabel());
-  }
-
   public String toString()
   {
-    return _label.toString();
+    return String.format("%s, %d", _label, _weight);
+  }
+
+  public int compareTo(Vertex<V> o)
+  {
+    int result = getWeight() - o.getWeight();
+    if (result == 0)
+    {
+      result = toString().compareTo(o.toString());
+    }
+    return result;
   }
 }

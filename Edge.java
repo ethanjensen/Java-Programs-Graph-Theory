@@ -72,6 +72,6 @@ public class Edge<V, E>
 
   public String toString()
   {
-    return String.format("%s, %s, %s", _vertex1, _vertex2, _label);
+    return String.format("%s, %s, %s, %d", _vertex1.getLabel(), _vertex2.getLabel(), _label, _weight);
   }
 }

@@ -1,16 +1,21 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class GraphTest
 {
   public static void main(String[] args)
   {
-    Vertex<Integer> v1 = new Vertex<>(1);
-    Vertex<Integer> v2 = new Vertex<>(2);
-    Vertex<Integer> v3 = new Vertex<>(3);
-    Vertex<Integer> v4 = new Vertex<>(4);
-    Vertex<Integer> v5 = new Vertex<>(5);
-    Vertex<Integer> v6 = new Vertex<>(6);
+    Vertex<Integer> v1 = new Vertex<>(1, 1);
+    Vertex<Integer> v2 = new Vertex<>(2, 2);
+    Vertex<Integer> v3 = new Vertex<>(3, 3);
+    Vertex<Integer> v4 = new Vertex<>(4, 4);
+    Vertex<Integer> v5 = new Vertex<>(5, 5);
+    Vertex<Integer> v6 = new Vertex<>(6, 6);
+
+    System.out.println(v1.getWeight());
+    System.out.println(v2.getWeight());
+    System.out.println(v1.compareTo(v2));
 
     Edge<Integer, Integer> e1 = new Edge<>(v1, v4, 1);
     Edge<Integer, Integer> e2 = new Edge<>(v1, v5, 2);
@@ -49,6 +54,39 @@ public class GraphTest
     System.out.println(graph1.vertexCount());
     System.out.println(graph1.edgeCount());
 
+    for(Vertex<Integer> v : graph1)
+    {
+      System.out.print("spicy");
+    }
+
+    Iterator<Vertex<Integer>> vertexIterator = graph1.vertices();
+    while(vertexIterator.hasNext())
+    {
+      System.out.print(vertexIterator.next());
+      System.out.print("   ");
+    }
+
+    System.out.println();
+
+    Iterator<Vertex<Integer>> vertexIterator2 = graph1.adjacent(v2);
+    while(vertexIterator2.hasNext())
+    {
+      System.out.print(vertexIterator2.next());
+      System.out.print("   ");
+    }
+
+    System.out.println();
+
+    Iterator<Edge<Integer, Integer>> vertexIterator3 = graph1.edges();
+    while(vertexIterator3.hasNext())
+    {
+      System.out.print(vertexIterator3.next());
+      System.out.print("   ");
+    }
+
+    System.out.println();
+    System.out.println(graph1.adjacentCount(v1));
+
     graph1.removeEdge(e1);
     System.out.println(graph1.removeVertex(v1));
 
@@ -58,5 +96,7 @@ public class GraphTest
     graph1.clearEdges();
     System.out.println(graph1.vertexCount());
     System.out.println(graph1.edgeCount());
+
+    System.out.println(graph1.adjacentCount(v1));
   }
 }

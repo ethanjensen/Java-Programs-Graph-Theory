@@ -211,9 +211,9 @@ public class Graph<V, E> implements Iterable<Vertex<V>>
     return count;
   }
 
-  public int totalVertexWeight()
+  public double totalVertexWeight()
   {
-    int weight = 0;
+    double weight = 0;
     for (Vertex<V> vertex : this)
     {
       weight = weight + vertex.getWeight();
@@ -221,9 +221,9 @@ public class Graph<V, E> implements Iterable<Vertex<V>>
     return weight;
   }
 
-  public int totalEdgeWeight()
+  public double totalEdgeWeight()
   {
-    int weight = 0;
+    double weight = 0;
     Iterator<Edge<V, E>> edges = edges();
     while (edges.hasNext())
     {

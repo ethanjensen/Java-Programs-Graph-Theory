@@ -1,7 +1,7 @@
 public class Vertex<V> implements Comparable<Vertex<V>>
 {
   private V _label;
-  private int _weight;
+  private double _weight;
 
   Vertex(V label)
   {
@@ -9,7 +9,7 @@ public class Vertex<V> implements Comparable<Vertex<V>>
     setWeight(0);
   }
 
-  Vertex(V label, int weight)
+  Vertex(V label, double weight)
   {
     setLabel(label);
     setWeight(weight);
@@ -20,7 +20,7 @@ public class Vertex<V> implements Comparable<Vertex<V>>
     return _label;
   }
 
-  public int getWeight()
+  public double getWeight()
   {
     return _weight;
   }
@@ -30,19 +30,19 @@ public class Vertex<V> implements Comparable<Vertex<V>>
     _label = label;
   }
 
-  public void setWeight(int weight)
+  public void setWeight(double weight)
   {
     _weight = weight;
   }
 
   public String toString()
   {
-    return String.format("%s, %d", _label, _weight);
+    return String.format("%s, %f", _label, _weight);
   }
 
   public int compareTo(Vertex<V> o)
   {
-    int result = getWeight() - o.getWeight();
+    int result = (int)getWeight() - (int)o.getWeight();
     if (result == 0)
     {
       result = toString().compareTo(o.toString());

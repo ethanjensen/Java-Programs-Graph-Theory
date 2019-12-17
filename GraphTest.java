@@ -111,5 +111,14 @@ public class GraphTest
     System.out.println(graph1.edgeCount());
 
     System.out.println(graph1.adjacentCount(v1));
+
+    Tree<String, String> t1 = new Tree<>();
+
+    Vertex<String> node1 = new Vertex<>("N1", 23);
+    t1.addVertex(node1);
+    for (Vertex<String> vertex : t1)
+    {
+      System.out.println(vertex);
+    }
   }
 }

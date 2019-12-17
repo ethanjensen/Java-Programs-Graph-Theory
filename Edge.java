@@ -3,7 +3,7 @@ public class Edge<V, E>
   private Vertex<V> _vertex1;
   private Vertex<V> _vertex2;
   private E _label;
-  private int _weight;
+  private double _weight;
 
   public Edge(Vertex<V> vertex1, Vertex<V> vertex2, E label)
   {
@@ -13,7 +13,7 @@ public class Edge<V, E>
     setWeight(0);
   }
 
-  public Edge(Vertex<V> vertex1, Vertex<V> vertex2, E label, int weight)
+  public Edge(Vertex<V> vertex1, Vertex<V> vertex2, E label, double weight)
   {
     setVertex1(vertex1);
     setVertex2(vertex2);
@@ -36,7 +36,7 @@ public class Edge<V, E>
     return _label;
   }
 
-  public int getWeight()
+  public double getWeight()
   {
     return _weight;
   }
@@ -56,7 +56,7 @@ public class Edge<V, E>
     _label = label;
   }
 
-  public void setWeight(int weight)
+  public void setWeight(double weight)
   {
     _weight = weight;
   }
@@ -72,6 +72,6 @@ public class Edge<V, E>
 
   public String toString()
   {
-    return String.format("%s, %s, %s, %d", _vertex1.getLabel(), _vertex2.getLabel(), _label, _weight);
+    return String.format("%s, %s, %s, %f", _vertex1.getLabel(), _vertex2.getLabel(), _label, _weight);
   }
 }

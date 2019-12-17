@@ -17,15 +17,16 @@ public class GraphTest
     System.out.println(v2.getWeight());
     System.out.println(v1.compareTo(v2));
 
-    Edge<Integer, Integer> e1 = new Edge<>(v1, v4, 1);
-    Edge<Integer, Integer> e2 = new Edge<>(v1, v5, 2);
-    Edge<Integer, Integer> e3 = new Edge<>(v1, v6, 3);
+    Edge<Integer, Integer> e1 = new Edge<>(v1, v4, 1, 1);
+    Edge<Integer, Integer> e2 = new Edge<>(v1, v5, 2, 3);
+    Edge<Integer, Integer> e3 = new Edge<>(v1, v6, 3, 6);
     Edge<Integer, Integer> e4 = new Edge<>(v2, v4, 4);
     Edge<Integer, Integer> e5 = new Edge<>(v2, v5, 5);
     Edge<Integer, Integer> e6 = new Edge<>(v2, v6, 6);
     Edge<Integer, Integer> e7 = new Edge<>(v3, v4, 7);
     Edge<Integer, Integer> e8 = new Edge<>(v3, v5, 8);
     Edge<Integer, Integer> e9 = new Edge<>(v3, v6, 9);
+    Edge<Integer, Integer> e10 = new Edge<>(v6, v1, 10, 77);
 
     Graph<Integer, Integer> graph1 = new Graph<>();
 
@@ -47,6 +48,7 @@ public class GraphTest
     edges.add(e7);
     edges.add(e8);
     edges.add(e9);
+    edges.add(e10);
 
     graph1.addVertices(vertices);
     graph1.addEdges(edges);
@@ -58,6 +60,8 @@ public class GraphTest
     {
       System.out.print("spicy");
     }
+
+    System.out.println();
 
     Iterator<Vertex<Integer>> vertexIterator = graph1.vertices();
     while(vertexIterator.hasNext())
@@ -83,9 +87,18 @@ public class GraphTest
       System.out.print(vertexIterator3.next());
       System.out.print("   ");
     }
+    System.out.println();
+
+    System.out.println(graph1.canReach(v1, v2));
+    System.out.println(graph1.canReach(v1, v4));
+    System.out.println(graph1.canReach(v1, v1));
+    System.out.println(graph1.hasCycle());
 
     System.out.println();
     System.out.println(graph1.adjacentCount(v1));
+
+    System.out.println(graph1.totalVertexWeight());
+    System.out.println(graph1.totalEdgeWeight());
 
     graph1.removeEdge(e1);
     System.out.println(graph1.removeVertex(v1));

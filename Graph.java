@@ -10,6 +10,29 @@ public class Graph<V, E> implements Iterable<Vertex<V>>
   private HashMap<Vertex<V>, Integer> _vertexMap;
   private HashMap<Integer, ArrayList<Edge<V, E>>> _edgeMap;
 
+  private boolean canReach(Vertex<V> v1, Vertex<V> v2, ArrayList<Vertex<V>> visited)
+  {
+    boolean canReach = false;
+    if (containsVertex(v1))
+    {
+      visited.add(v1);
+      Vertex<V> tempVertex;
+      Iterator<Vertex<V>> adjacentVertices = adjacent(v1);
+      while(adjacentVertices.hasNext() && !canReach)
+      {
+        tempVertex = adjacentVertices.next();
+        if (tempVertex.compareTo(v2) == 0)
+        {
+          canReach = true;
+        }
+        else if(!visited.contains(tempVertex))
+        {
+          canReach = canReach(tempVertex, v2, visited);
+        }
+      }
+    }
+    return canReach;
+  }
 
   Graph()
   {
@@ -186,5 +209,41 @@ public class Graph<V, E> implements Iterable<Vertex<V>>
       count = edges.size();
     }
     return count;
+  }
+
+  public int totalVertexWeight()
+  {
+    int weight = 0;
+    for (Vertex<V> vertex : this)
+    {
+      weight = weight + vertex.getWeight();
+    }
+    return weight;
+  }
+
+  public int totalEdgeWeight()
+  {
+    int weight = 0;
+    Iterator<Edge<V, E>> edges = edges();
+    while (edges.hasNext())
+    {
+      weight = weight + edges.next().getWeight();
+    }
+    return weight;
+  }
+
+  public boolean canReach(Vertex<V> v1, Vertex<V> v2)
+  {
+    return canReach(v1, v2, new ArrayList<Vertex<V>>());
+  }
+
+  public boolean hasCycle()
+  {
+    boolean hasCycle = false;
+    for (Vertex<V> vertex : this)
+    {
+      hasCycle = hasCycle | canReach(vertex, vertex);
+    }
+    return hasCycle;
   }
 }

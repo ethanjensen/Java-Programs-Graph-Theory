@@ -12,26 +12,26 @@ public class Graph<V, E> implements Iterable<Vertex<V>>
 
   private boolean canReach(Vertex<V> v1, Vertex<V> v2, ArrayList<Vertex<V>> visited)
   {
-    boolean canReach = false;
+    boolean reached = false;
     if (containsVertex(v1))
     {
       visited.add(v1);
       Vertex<V> tempVertex;
       Iterator<Vertex<V>> adjacentVertices = adjacent(v1);
-      while(adjacentVertices.hasNext() && !canReach)
+      while(adjacentVertices.hasNext() && !reached)
       {
         tempVertex = adjacentVertices.next();
         if (tempVertex.compareTo(v2) == 0)
         {
-          canReach = true;
+          reached = true;
         }
         else if(!visited.contains(tempVertex))
         {
-          canReach = canReach(tempVertex, v2, visited);
+          reached = canReach(tempVertex, v2, visited);
         }
       }
     }
-    return canReach;
+    return reached;
   }
 
   Graph()

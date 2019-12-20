@@ -32,6 +32,91 @@ public class Tree<V, E>
     return _vertex;
   }
 
+  public boolean isRoot()
+  {
+    return getParent() == null;
+  }
+
+  public boolean isLeaf()
+  {
+    return _children.size() == 0;
+  }
+
+  public boolean isAncestorOf(Tree<V, E> tree)
+  {
+    boolean isAncestor = false;
+    if (tree != null)
+    {
+      isAncestor = this.equals(tree.getParent());
+      if (!isAncestor && !tree.isRoot())
+      {
+        isAncestor = isAncestorOf(tree.getParent());
+      }
+    }
+    return isAncestor;
+  }
+
+  public boolean isSiblingOf(Tree<V, E> tree)
+  {
+    return getParent() == tree.getParent();
+  }
+
+  public int childCount()
+  {
+    return _children.size();
+  }
+
+  public int size()
+  {
+    int size = 1;
+    if (!isLeaf())
+    {
+      for (Tree<V, E> child : _children)
+      {
+        size = size + child.size();
+      }
+    }
+    return size;
+  }
+
+  public void clear()
+  {
+    for (Tree<V, E> child : _children)
+    {
+      child.setParent(null);
+    }
+    _children = new ArrayList<>();
+    _edges = new ArrayList<>();
+  }
+
+  public int height()
+  {
+    int height = 0;
+    if (!isLeaf())
+    {
+      int tempHeight;
+      for (Tree<V, E> child : _children)
+      {
+        tempHeight = child.height();
+        if (tempHeight >= height)
+        {
+          height = 1 + tempHeight;
+        }
+      }
+    }
+    return height;
+  }
+
+  public int level()
+  {
+    int level = 0;
+    if (!isRoot())
+    {
+      level = 1 + getParent().level();
+    }
+    return level;
+  }
+
   public void add(Tree<V, E> child, E label, double weight) throws IllegalArgumentException
   {
     if (child != null)
@@ -58,30 +143,6 @@ public class Tree<V, E>
     }
   }
 
-  public boolean isRoot()
-  {
-    return getParent() == null;
-  }
-
-  public boolean isLeaf()
-  {
-    return _children.size() == 0;
-  }
-
-  public boolean isAncestorOf(Tree<V, E> tree)
-  {
-    boolean isAncestor = false;
-    if (tree != null)
-    {
-      isAncestor = this.equals(tree.getParent());
-      if (!isAncestor && !tree.isRoot())
-      {
-        isAncestor = isAncestorOf(tree.getParent());
-      }
-    }
-    return isAncestor;
-  }
-
   public void remove(Tree<V, E> tree) throws IllegalArgumentException
   {
     if (this.equals(tree.getParent()))
@@ -102,6 +163,27 @@ public class Tree<V, E>
     {
       throw new IllegalArgumentException();
     }
+  }
+
+  public boolean isBalanced()
+  {
+    boolean balanced = true;
+    if (!isLeaf())
+    {
+      int height = height();
+      for (Tree<V, E> child : _children)
+      {
+        if (child.height() < height - 1)
+        {
+          balanced = false;
+        }
+        if (balanced)
+        {
+          balanced = child.isBalanced();
+        }
+      }
+    }
+    return balanced;
   }
 
   public double pathCost(Tree<V, E> tree) throws IllegalArgumentException
@@ -128,21 +210,8 @@ public class Tree<V, E>
     }
     else
     {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("No such path exists.");
     }
     return cost;
-  }
-
-  public int size()
-  {
-    int size = 1;
-    if (!isLeaf())
-    {
-      for (Tree<V, E> child : _children)
-      {
-        size = size + child.size();
-      }
-    }
-    return size;
   }
 }

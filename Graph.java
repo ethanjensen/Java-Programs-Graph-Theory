@@ -137,6 +137,24 @@ public class Graph<V, E> implements Iterable<Vertex<V>>
     return contains;
   }
 
+  public Edge<V, E> getEdge(Vertex<V> v1, Vertex<V> v2)
+  {
+    Iterator<Edge<V, E>> edges = edges();
+    Edge<V, E> edge = null;
+    Edge<V, E> tempEdge;
+    boolean done = false;
+    while (edges.hasNext() && !done)
+    {
+      tempEdge = edges.next();
+      if (v1.equals(tempEdge.getVertex1()) && v2.equals(tempEdge.getVertex2()))
+      {
+        edge = tempEdge;
+        done = true;
+      }
+    }
+    return edge;
+  }
+
   public ArrayList<Edge<V, E>> removeVertex(Vertex<V> v) throws NoSuchVertexException
   {
     ArrayList<Edge<V, E>> temp = null;
@@ -245,5 +263,110 @@ public class Graph<V, E> implements Iterable<Vertex<V>>
       hasCycle = hasCycle | canReach(vertex, vertex);
     }
     return hasCycle;
+  }
+
+  // public costBetween(Vertex<V> v1, Vertex<V> v2)
+  // REQUIRES MINSPANNINGTREE
+
+
+  public Tree<V, E> minSpanningTree(Vertex<V> v) throws NoSuchVertexException
+  {
+    if (containsVertex(v))
+    {
+      ArrayList<Vertex<V>> done = new ArrayList<>();
+      done.add(v);
+      return minSpanningTree(done, v, 0, new ArrayList<Edge<V,E>>());
+    }
+    else
+    {
+      throw new NoSuchVertexException();
+    }
+  }
+
+  private Tree<V, E> minSpanningTree(ArrayList<Vertex<V>> done, Vertex<V> pivot,
+   double pathWeight, ArrayList<Edge<V, E>> edges)
+  {
+    Tree<V, E> tree = null;
+    ArrayList<Edge<V, E>> relevantEdges = new ArrayList<>();
+    Iterator<Vertex<V>> adjacent = adjacent(pivot);
+    Vertex<V> vertex;
+    Edge<V, E> edge;
+    while (adjacent.hasNext())
+    {
+      vertex = adjacent.next();
+      if (!done.contains(vertex))
+      {
+        edge = getEdge(pivot, vertex);
+        edge.setWeight(edge.getWeight() + pathWeight);
+        relevantEdges.add(getEdge(pivot, vertex));
+        System.out.println(getEdge(pivot, vertex));
+      }
+    }
+
+    Vertex<V> v1;
+    Vertex<V> v2;
+    boolean copy;
+    for (Edge<V, E> edge1 : relevantEdges)
+    {
+      v1 = edge1.getVertex1();
+      v2 = edge1.getVertex2();
+      copy = false;
+      for (Edge<V, E> edge2 : edges)
+      {
+        if (v2.equals(edge2.getVertex2()))
+        {
+          copy = true;
+          if (edge1.getWeight() < edge2.getWeight())
+          {
+            edge2 = edge1;
+          }
+        }
+      }
+      if (!copy)
+      {
+        edges.add(edge1);
+      }
+    }
+
+    Edge<V, E> minEdge = null;
+    for (Edge<V, E> sledge : edges)
+    {
+      if (!done.contains(sledge.getVertex2()))
+      {
+        if (minEdge == null)
+        {
+          minEdge = sledge;
+        }
+        else
+        {
+          if (sledge.getWeight() < minEdge.getWeight())
+          {
+            minEdge = sledge;
+          }
+        }
+      }
+    }
+    //Ending condition? But it gets here prematurely.
+    if (minEdge == null)
+    {
+      System.out.println("SPICY");
+      for (Edge<V, E> hedge : edges)
+      {
+        System.out.println(hedge);
+      }
+      tree = createTree(edges, done);
+    }
+    else
+    {
+      done.add(minEdge.getVertex2());
+      System.out.println("spicy");
+      tree = minSpanningTree(done, minEdge.getVertex2(), minEdge.getWeight(), edges);
+    }
+    return tree;
+  }
+
+  private Tree<V, E> createTree(ArrayList<Edge<V, E>> edges, ArrayList<Vertex<V>> done)
+  {
+    return new Tree<V, E>(done.get(0));
   }
 }

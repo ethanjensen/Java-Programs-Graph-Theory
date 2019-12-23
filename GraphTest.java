@@ -87,6 +87,16 @@ public class GraphTest
     g1.addEdge(e29);
     g1.addEdge(e30);
 
-    g1.minSpanningTree(v4);
+    Tree<String, String> tree = g1.minSpanningTree(v5);
+    System.out.println(tree.size());
+    System.out.println(tree.childCount());
+    for (Vertex<String> v : tree)
+    {
+      System.out.println(v);
+    }
+    Graph<String, String> g2 = tree.toGraph();
+    System.out.println(g2.vertexCount());
+    System.out.println(g2.edgeCount());
+    System.out.println(g2.totalEdgeWeight());
   }
 }

@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.lang.IllegalArgumentException;
 import java.util.Iterator;
 
-public class Tree<V, E>
+public class Tree<V, E> implements Iterable<Vertex<V>>
 {
   private Tree<V, E> _parent;
   private Vertex<V> _vertex;
@@ -66,6 +66,15 @@ public class Tree<V, E>
     return _children.size();
   }
 
+  public ArrayList<Tree<V, E>> getChildren()
+  {
+    return _children;
+  }
+
+  public ArrayList<Edge<V,E>> getEdges()
+  {
+    return _edges;
+  }
   public int size()
   {
     int size = 1;
@@ -213,5 +222,68 @@ public class Tree<V, E>
       throw new IllegalArgumentException("No such path exists.");
     }
     return cost;
+  }
+
+  public Iterator<Vertex<V>> iterator()
+  {
+    return preOrderIterator();
+  }
+
+  public Iterator<Vertex<V>> preOrderIterator()
+  {
+    ArrayList<Vertex<V>> trees = new ArrayList<>();
+    for(Tree<V, E> child : getChildren())
+    {
+      for(Vertex<V> v : child)
+      {
+        trees.add(v);
+      }
+    }
+    trees.add(getVertex());
+    return trees.iterator();
+  }
+
+  public Iterator<Vertex<V>> postOrderIterator()
+  {
+    ArrayList<Vertex<V>> vertices = new ArrayList<>();
+    vertices.add(getVertex());
+    for(Tree<V, E> child : getChildren())
+    {
+      for(Vertex<V> v : child)
+      {
+        vertices.add(v);
+      }
+    }
+    return vertices.iterator();
+  }
+
+  public Iterator<Edge<V, E>> edgeIterator()
+  {
+    ArrayList<Edge<V, E>> edges = new ArrayList<>();
+    edges.addAll(getEdges());
+    for(Tree<V, E> child : getChildren())
+    {
+      Iterator<Edge<V, E>> edgeIterator = child.edgeIterator();
+      while (edgeIterator.hasNext())
+      {
+        edges.add(edgeIterator.next());
+      }
+    }
+    return edges.iterator();
+  }
+
+  public Graph<V, E> toGraph()
+  {
+    Graph<V, E> graph = new Graph<>();
+    for (Vertex<V> v : this)
+    {
+      graph.addVertex(v);
+    }
+    Iterator<Edge<V, E>> edgeIterator = edgeIterator();
+    while (edgeIterator.hasNext())
+    {
+      graph.addEdge(edgeIterator.next());
+    }
+    return graph;
   }
 }

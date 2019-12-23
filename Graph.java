@@ -265,9 +265,10 @@ public class Graph<V, E> implements Iterable<Vertex<V>>
     return hasCycle;
   }
 
-  // public costBetween(Vertex<V> v1, Vertex<V> v2)
-  // REQUIRES MINSPANNINGTREE
-
+  // public double costBetween(Vertex<V> v1, Vertex<V> v2)
+  // {
+  //   return minSpanningTree(v1).pathCost(v2);
+  // }
 
   public Tree<V, E> minSpanningTree(Vertex<V> v) throws NoSuchVertexException
   {
@@ -299,10 +300,8 @@ public class Graph<V, E> implements Iterable<Vertex<V>>
         edge = getEdge(pivot, vertex);
         edge.setWeight(edge.getWeight() + pathWeight);
         relevantEdges.add(getEdge(pivot, vertex));
-        System.out.println(getEdge(pivot, vertex));
       }
     }
-
     Vertex<V> v1;
     Vertex<V> v2;
     boolean copy;
@@ -327,7 +326,6 @@ public class Graph<V, E> implements Iterable<Vertex<V>>
         edges.add(edge1);
       }
     }
-
     Edge<V, E> minEdge = null;
     for (Edge<V, E> sledge : edges)
     {
@@ -346,27 +344,35 @@ public class Graph<V, E> implements Iterable<Vertex<V>>
         }
       }
     }
-    //Ending condition? But it gets here prematurely.
     if (minEdge == null)
     {
-      System.out.println("SPICY");
-      for (Edge<V, E> hedge : edges)
-      {
-        System.out.println(hedge);
-      }
-      tree = createTree(edges, done);
+      tree = createTree(edges, edges.get(0).getVertex1());
     }
     else
     {
       done.add(minEdge.getVertex2());
-      System.out.println("spicy");
       tree = minSpanningTree(done, minEdge.getVertex2(), minEdge.getWeight(), edges);
     }
     return tree;
   }
 
-  private Tree<V, E> createTree(ArrayList<Edge<V, E>> edges, ArrayList<Vertex<V>> done)
+  private Tree<V, E> createTree(ArrayList<Edge<V, E>> edges, Vertex<V> v)
   {
-    return new Tree<V, E>(done.get(0));
+    Tree<V, E> tree = new Tree<>(v);
+    Tree<V, E> tempTree;
+    ArrayList<Edge<V, E>> tempEdges = new ArrayList<>(edges.size());
+    for (Edge<V, E> edge: edges)
+    {
+      if (edge.getVertex1().compareTo(v) == 0)
+      {
+        tempEdges.add(edge);
+      }
+    }
+    for (Edge<V, E> edge : tempEdges)
+    {
+      tempTree = createTree(edges, edge.getVertex2());
+      tree.add(tempTree, null, edge.getWeight());
+    }
+    return tree;
   }
 }

@@ -267,16 +267,16 @@ public class Graph<V, E> implements Iterable<Vertex<V>>
 
   // public double costBetween(Vertex<V> v1, Vertex<V> v2)
   // {
-  //   return minSpanningTree(v1).pathCost(v2);
+  //   return minWeightTree(v1).pathCost(v2);
   // }
 
-  public Tree<V, E> minSpanningTree(Vertex<V> v) throws NoSuchVertexException
+  public Tree<V, E> minWeightTree(Vertex<V> v) throws NoSuchVertexException
   {
     if (containsVertex(v))
     {
       ArrayList<Vertex<V>> done = new ArrayList<>();
       done.add(v);
-      return minSpanningTree(done, v, 0, new ArrayList<Edge<V,E>>());
+      return minWeightTree(done, v, 0, new ArrayList<Edge<V,E>>());
     }
     else
     {
@@ -284,7 +284,7 @@ public class Graph<V, E> implements Iterable<Vertex<V>>
     }
   }
 
-  private Tree<V, E> minSpanningTree(ArrayList<Vertex<V>> done, Vertex<V> pivot,
+  private Tree<V, E> minWeightTree(ArrayList<Vertex<V>> done, Vertex<V> pivot,
    double pathWeight, ArrayList<Edge<V, E>> edges)
   {
     Tree<V, E> tree = null;
@@ -351,7 +351,7 @@ public class Graph<V, E> implements Iterable<Vertex<V>>
     else
     {
       done.add(minEdge.getVertex2());
-      tree = minSpanningTree(done, minEdge.getVertex2(), minEdge.getWeight(), edges);
+      tree = minWeightTree(done, minEdge.getVertex2(), minEdge.getWeight(), edges);
     }
     return tree;
   }

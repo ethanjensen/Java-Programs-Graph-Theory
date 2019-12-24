@@ -87,7 +87,7 @@ public class GraphTest
     g1.addEdge(e29);
     g1.addEdge(e30);
 
-    Tree<String, String> tree = g1.minWeightTree(v5);
+    Tree<String, String> tree = g1.minWeightTree(v2);
     System.out.println(tree.size());
     System.out.println(tree.childCount());
     for (Vertex<String> v : tree)
@@ -98,5 +98,18 @@ public class GraphTest
     System.out.println(g2.vertexCount());
     System.out.println(g2.edgeCount());
     System.out.println(g2.totalEdgeWeight());
+    Tree<String, String> tree2 = tree.getSubtreeAt(v2);
+    Graph<String, String> g3 = tree2.toGraph();
+    System.out.println(g3.vertexCount());
+    System.out.println(g3.edgeCount());
+    System.out.println(g3.totalEdgeWeight());
+    Iterator<Edge<String, String>> edgeIterator = tree2.edgeIterator();
+    while (edgeIterator.hasNext())
+    {
+      System.out.println(edgeIterator.next());
+    }
+    Tree<String, String> tree3 = g1.minWeightTree(v2);
+    System.out.println(g1.costBetween(v1, v8));
+    System.out.println(g1.costBetween(v2, v8));
   }
 }

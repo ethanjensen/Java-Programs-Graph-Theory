@@ -265,10 +265,11 @@ public class Graph<V, E> implements Iterable<Vertex<V>>
     return hasCycle;
   }
 
-  // public double costBetween(Vertex<V> v1, Vertex<V> v2)
-  // {
-  //   return minWeightTree(v1).pathCost(v2);
-  // }
+  public double costBetween(Vertex<V> v1, Vertex<V> v2)
+  {
+    Tree<V, E> tree = minWeightTree(v1);
+    return tree.pathCost(tree.getSubtreeAt(v2));
+  }
 
   public Tree<V, E> minWeightTree(Vertex<V> v) throws NoSuchVertexException
   {
@@ -292,12 +293,14 @@ public class Graph<V, E> implements Iterable<Vertex<V>>
     Iterator<Vertex<V>> adjacent = adjacent(pivot);
     Vertex<V> vertex;
     Edge<V, E> edge;
+    Edge<V, E> tempEdge;
     while (adjacent.hasNext())
     {
       vertex = adjacent.next();
       if (!done.contains(vertex))
       {
-        edge = getEdge(pivot, vertex);
+        tempEdge = getEdge(pivot, vertex);
+        edge = new Edge<>(tempEdge.getVertex1(), tempEdge.getVertex2(), null, tempEdge.getWeight());
         edge.setWeight(edge.getWeight() + pathWeight);
         relevantEdges.add(getEdge(pivot, vertex));
       }

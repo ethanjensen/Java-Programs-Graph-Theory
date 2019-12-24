@@ -286,4 +286,21 @@ public class Tree<V, E> implements Iterable<Vertex<V>>
     }
     return graph;
   }
+
+  public Tree<V, E> getSubtreeAt(Vertex<V> v)
+  {
+    Tree<V, E> tree = null;
+    if (getVertex().compareTo(v) == 0)
+    {
+      tree = this;
+    }
+    for (Tree<V, E> child : _children)
+    {
+      if (tree == null)
+      {
+        tree = child.getSubtreeAt(v);
+      }
+    }
+    return tree;
+  }
 }
